@@ -14,7 +14,7 @@ class User
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: 'App\Entity\Amor')]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: 'App\Entity\Kind')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]

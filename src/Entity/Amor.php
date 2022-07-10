@@ -49,7 +49,7 @@ class Amor
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $photo;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

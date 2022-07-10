@@ -50,6 +50,7 @@ class Locus
     private $web;
 
     #[ORM\Column(type: 'integer')]
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'id')]
     private $user;
 
     public function getId(): ?int

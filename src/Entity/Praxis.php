@@ -29,6 +29,7 @@ class Praxis
     private $favorite;
 
     #[ORM\Column(type: 'integer')]
+    #[ORM\OneToOne(targetEntity: 'Locus')]
     private $locus;
 
     #[ORM\Column(type: 'date')]
@@ -47,6 +48,7 @@ class Praxis
     private $tl;
 
     #[ORM\Column(type: 'integer')]
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'id')]
     private $user;
 
     public function getId(): ?int
