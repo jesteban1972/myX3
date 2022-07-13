@@ -26,7 +26,7 @@ class Praxis
     private $rating;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $favorite;
+    private $isFavorite;
 
     #[ORM\Column(type: 'integer')]
     #[ORM\OneToOne(targetEntity: 'Locus')]
@@ -48,7 +48,7 @@ class Praxis
     private $tl;
 
     #[ORM\Column(type: 'integer')]
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'id')]
+    //#[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'id')]
     private $user;
 
     public function getId(): ?int
@@ -92,14 +92,14 @@ class Praxis
         return $this;
     }
 
-    public function isFavorite(): ?bool
+    public function isIsFavorite(): ?bool
     {
-        return $this->favorite;
+        return $this->isFavorite;
     }
 
-    public function setFavorite(?bool $favorite): self
+    public function setIsFavorite(?bool $isFavorite): self
     {
-        $this->favorite = $favorite;
+        $this->isFavorite = $isFavorite;
 
         return $this;
     }

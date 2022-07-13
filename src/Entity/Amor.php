@@ -29,7 +29,7 @@ class Amor
     private $rating;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $favorite;
+    private $isFavorite;
 
     #[ORM\Column(type: 'string', length: 510)]
     private $description1;
@@ -50,7 +50,7 @@ class Amor
     private $name;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $photo;
+    private $hasPhoto;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $phone;
@@ -62,7 +62,7 @@ class Amor
     private $other;
 
     #[ORM\Column(type: 'integer')]
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'id')]
+    //#[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'id')]
     private $user;
 
     public function getId(): ?int
@@ -118,14 +118,14 @@ class Amor
         return $this;
     }
 
-    public function isFavorite(): ?bool
+    public function isIsFavorite(): ?bool
     {
-        return $this->favorite;
+        return $this->isFavorite;
     }
 
-    public function setFavorite(?bool $favorite): self
+    public function setIsFavorite(?bool $isFavorite): self
     {
-        $this->favorite = $favorite;
+        $this->isFavorite = $isFavorite;
 
         return $this;
     }
@@ -202,14 +202,14 @@ class Amor
         return $this;
     }
 
-    public function hasPhoto(): ?bool
+    public function isHasPhoto(): ?bool
     {
-        return $this->photo;
+        return $this->hasPhoto;
     }
 
-    public function setHasPhoto(bool $hasPhoto): self
+    public function setHasPhoto(?bool $hasPhoto): self
     {
-        $this->photo = $hasPhoto;
+        $this->hasPhoto = $hasPhoto;
 
         return $this;
     }
