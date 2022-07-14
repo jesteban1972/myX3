@@ -4,24 +4,39 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        'get' => [
+            'path' => '/users'
+        ],
+        'post' => [
+            'path' => '/user'
+        ]
+    ],
+    itemOperations: [
+        'get' => [
+            'path' => '/user/{id}'
+        ],
+        'put' => [
+            'path' => '/user/{id}'
+        ],
+        'delete' => [
+            'path' => '/user/{id}'
+        ]
+    ]
+)]
 class User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    //#[ORM\OneToMany(mappedBy: 'user', targetEntity: 'App\Entity\Kind')]
     private $id;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $username;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $password;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $email;
@@ -56,33 +71,37 @@ class User
     #[ORM\Column(type: 'integer', nullable: true)]
     private $userKind;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Locus::class, orphanRemoval: true)]
+    private $loca;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Praxis::class, orphanRemoval: true)]
+    private $practica;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Amor::class, orphanRemoval: true)]
+    private $amores;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Assignation::class, orphanRemoval: true)]
+    private $assignations;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Kind::class, orphanRemoval: true)]
+    private $kinds;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Country::class, orphanRemoval: true)]
+    private $countries;
+
+    public function __construct()
+    {
+        $this->loca = new ArrayCollection();
+        $this->practica = new ArrayCollection();
+        $this->amores = new ArrayCollection();
+        $this->assignations = new ArrayCollection();
+        $this->kinds = new ArrayCollection();
+        $this->countries = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
     }
 
     public function getEmail(): ?string
@@ -213,6 +232,186 @@ class User
     public function setUserKind(?int $userKind): self
     {
         $this->userKind = $userKind;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Locus>
+     */
+    public function getLoca(): Collection
+    {
+        return $this->loca;
+    }
+
+    public function addLoca(Locus $loca): self
+    {
+        if (!$this->loca->contains($loca)) {
+            $this->loca[] = $loca;
+            $loca->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLoca(Locus $loca): self
+    {
+        if ($this->loca->removeElement($loca)) {
+            // set the owning side to null (unless already changed)
+            if ($loca->getUser() === $this) {
+                $loca->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Praxis>
+     */
+    public function getPractica(): Collection
+    {
+        return $this->practica;
+    }
+
+    public function addPractica(Praxis $practica): self
+    {
+        if (!$this->practica->contains($practica)) {
+            $this->practica[] = $practica;
+            $practica->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePractica(Praxis $practica): self
+    {
+        if ($this->practica->removeElement($practica)) {
+            // set the owning side to null (unless already changed)
+            if ($practica->getUser() === $this) {
+                $practica->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Amor>
+     */
+    public function getAmores(): Collection
+    {
+        return $this->amores;
+    }
+
+    public function addAmore(Amor $amore): self
+    {
+        if (!$this->amores->contains($amore)) {
+            $this->amores[] = $amore;
+            $amore->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAmore(Amor $amore): self
+    {
+        if ($this->amores->removeElement($amore)) {
+            // set the owning side to null (unless already changed)
+            if ($amore->getUser() === $this) {
+                $amore->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Assignation>
+     */
+    public function getAssignations(): Collection
+    {
+        return $this->assignations;
+    }
+
+    public function addAssignation(Assignation $assignation): self
+    {
+        if (!$this->assignations->contains($assignation)) {
+            $this->assignations[] = $assignation;
+            $assignation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssignation(Assignation $assignation): self
+    {
+        if ($this->assignations->removeElement($assignation)) {
+            // set the owning side to null (unless already changed)
+            if ($assignation->getUser() === $this) {
+                $assignation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Kind>
+     */
+    public function getKinds(): Collection
+    {
+        return $this->kinds;
+    }
+
+    public function addKind(Kind $kind): self
+    {
+        if (!$this->kinds->contains($kind)) {
+            $this->kinds[] = $kind;
+            $kind->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeKind(Kind $kind): self
+    {
+        if ($this->kinds->removeElement($kind)) {
+            // set the owning side to null (unless already changed)
+            if ($kind->getUser() === $this) {
+                $kind->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Country>
+     */
+    public function getCountries(): Collection
+    {
+        return $this->countries;
+    }
+
+    public function addCountry(Country $country): self
+    {
+        if (!$this->countries->contains($country)) {
+            $this->countries[] = $country;
+            $country->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCountry(Country $country): self
+    {
+        if ($this->countries->removeElement($country)) {
+            // set the owning side to null (unless already changed)
+            if ($country->getUser() === $this) {
+                $country->setUser(null);
+            }
+        }
 
         return $this;
     }

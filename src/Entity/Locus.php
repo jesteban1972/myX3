@@ -4,11 +4,33 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\LocusRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LocusRepository::class)]
 #[ORM\Table(name: 'loca')]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        'get' => [
+            'path' => '/loca'
+        ],
+        'post' => [
+            'path' => '/locus'
+        ]
+    ],
+    itemOperations: [
+        'get' => [
+            'path' => '/locus/{id}'
+        ],
+        'put' => [
+            'path' => '/locus/{id}'
+        ],
+        'delete' => [
+            'path' => '/locus/{id}'
+        ]
+    ]
+)]
 class Locus
 {
     #[ORM\Id]
@@ -16,7 +38,7 @@ class Locus
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 510, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $achtung;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -28,16 +50,16 @@ class Locus
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $isFavorite;
 
-    #[ORM\Column(type: 'string', length: 510, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $address;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'integer')]
     private $country;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'integer')]
     private $kind;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -49,9 +71,17 @@ class Locus
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $web;
 
-    #[ORM\Column(type: 'integer')]
-    //#[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'id')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'loca')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
+
+    #[ORM\OneToMany(mappedBy: 'locus', targetEntity: Praxis::class, orphanRemoval: true)]
+    private $practica;
+
+    public function __construct()
+    {
+        $this->practica = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -96,7 +126,7 @@ class Locus
 
     public function isIsFavorite(): ?bool
     {
-        return $this->favorite;
+        return $this->isFavorite;
     }
 
     public function setIsFavorite(?bool $isFavorite): self
@@ -123,7 +153,7 @@ class Locus
         return $this->country;
     }
 
-    public function setCountry(?int $country): self
+    public function setCountry(int $country): self
     {
         $this->country = $country;
 
@@ -135,7 +165,7 @@ class Locus
         return $this->kind;
     }
 
-    public function setKind(?int $kind): self
+    public function setKind(int $kind): self
     {
         $this->kind = $kind;
 
@@ -190,14 +220,44 @@ class Locus
         return $this;
     }
 
-    public function getUser(): ?int
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(int $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Praxis>
+     */
+    public function getPractica(): Collection
+    {
+        return $this->practica;
+    }
+
+    public function addPractica(Praxis $practica): self
+    {
+        if (!$this->practica->contains($practica)) {
+            $this->practica[] = $practica;
+            $practica->setLocus($this);
+        }
+
+        return $this;
+    }
+
+    public function removePractica(Praxis $practica): self
+    {
+        if ($this->practica->removeElement($practica)) {
+            // set the owning side to null (unless already changed)
+            if ($practica->getLocus() === $this) {
+                $practica->setLocus(null);
+            }
+        }
 
         return $this;
     }

@@ -8,7 +8,27 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: KindRepository::class)]
 #[ORM\Table(name: 'kinds')]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        'get' => [
+            'path' => '/kinds'
+        ],
+        'post' => [
+            'path' => '/kind'
+        ]
+    ],
+    itemOperations: [
+        'get' => [
+            'path' => '/kind/{id}'
+        ],
+        'put' => [
+            'path' => '/kind/{id}'
+        ],
+        'delete' => [
+            'path' => '/kind/{id}'
+        ]
+    ]
+)]
 class Kind
 {
     #[ORM\Id]
@@ -19,7 +39,8 @@ class Kind
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'kinds')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
     public function getId(): ?int
@@ -39,12 +60,12 @@ class Kind
         return $this;
     }
 
-    public function getUser(): ?int
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(int $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 

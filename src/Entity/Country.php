@@ -8,7 +8,27 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CountryRepository::class)]
 #[ORM\Table(name: 'countries')]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        'get' => [
+            'path' => '/countries'
+        ],
+        'post' => [
+            'path' => '/country'
+        ]
+    ],
+    itemOperations: [
+        'get' => [
+            'path' => '/country/{id}'
+        ],
+        'put' => [
+            'path' => '/country/{id}'
+        ],
+        'delete' => [
+            'path' => '/country/{id}'
+        ]
+    ]
+)]
 class Country
 {
     #[ORM\Id]
@@ -19,7 +39,8 @@ class Country
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'countries')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
     public function getId(): ?int
@@ -39,12 +60,12 @@ class Country
         return $this;
     }
 
-    public function getUser(): ?int
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(int $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 

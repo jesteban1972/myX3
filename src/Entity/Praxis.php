@@ -4,11 +4,33 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PraxisRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PraxisRepository::class)]
 #[ORM\Table(name: 'practica')]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        'get' => [
+            'path' => '/practica'
+        ],
+        'post' => [
+            'path' => '/praxis'
+        ]
+    ],
+    itemOperations: [
+        'get' => [
+            'path' => '/praxis/{id}'
+        ],
+        'put' => [
+            'path' => '/praxis/{id}'
+        ],
+        'delete' => [
+            'path' => '/praxis/{id}'
+        ]
+    ]
+)]
 class Praxis
 {
     #[ORM\Id]
@@ -16,7 +38,7 @@ class Praxis
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 510, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $achtung;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -28,14 +50,14 @@ class Praxis
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $isFavorite;
 
-    #[ORM\Column(type: 'integer')]
-    #[ORM\OneToOne(targetEntity: 'Locus')]
+    #[ORM\ManyToOne(targetEntity: Locus::class, inversedBy: 'practica')]
+    #[ORM\JoinColumn(nullable: false)]
     private $locus;
 
     #[ORM\Column(type: 'date')]
     private $date;
 
-    #[ORM\Column(type: 'string', length: 2, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $ordinal;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -47,9 +69,17 @@ class Praxis
     #[ORM\Column(type: 'integer', nullable: true)]
     private $tl;
 
-    #[ORM\Column(type: 'integer')]
-    //#[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'id')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'practica')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
+
+    #[ORM\OneToMany(mappedBy: 'praxis', targetEntity: Assignation::class, orphanRemoval: true)]
+    private $assignations;
+
+    public function __construct()
+    {
+        $this->assignations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -85,7 +115,7 @@ class Praxis
         return $this->rating;
     }
 
-    public function setRating(int $rating): self
+    public function setRating(?int $rating): self
     {
         $this->rating = $rating;
 
@@ -104,12 +134,12 @@ class Praxis
         return $this;
     }
 
-    public function getLocus(): ?int
+    public function getLocus(): ?Locus
     {
         return $this->locus;
     }
 
-    public function setLocus(int $locus): self
+    public function setLocus(?Locus $locus): self
     {
         $this->locus = $locus;
 
@@ -147,7 +177,7 @@ class Praxis
 
     public function setDescription(?string $description): self
     {
-        $this->descr = $description;
+        $this->description = $description;
 
         return $this;
     }
@@ -176,14 +206,44 @@ class Praxis
         return $this;
     }
 
-    public function getUser(): ?int
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(int $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Assignation>
+     */
+    public function getAssignations(): Collection
+    {
+        return $this->assignations;
+    }
+
+    public function addAssignation(Assignation $assignation): self
+    {
+        if (!$this->assignations->contains($assignation)) {
+            $this->assignations[] = $assignation;
+            $assignation->setPraxis($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssignation(Assignation $assignation): self
+    {
+        if ($this->assignations->removeElement($assignation)) {
+            // set the owning side to null (unless already changed)
+            if ($assignation->getPraxis() === $this) {
+                $assignation->setPraxis(null);
+            }
+        }
 
         return $this;
     }

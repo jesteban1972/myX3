@@ -4,11 +4,33 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AmorRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AmorRepository::class)]
 #[ORM\Table(name: 'amores')]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        'get' => [
+            'path' => '/amores'
+        ],
+        'post' => [
+            'path' => '/amor'
+        ]
+    ],
+    itemOperations: [
+        'get' => [
+            'path' => '/amor/{id}'
+        ],
+        'put' => [
+            'path' => '/amor/{id}'
+        ],
+        'delete' => [
+            'path' => '/amor/{id}'
+        ]
+    ]
+)]
 class Amor
 {
     #[ORM\Id]
@@ -16,14 +38,11 @@ class Amor
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 510, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $achtung;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $alias;
-
-    #[ORM\Column(type: 'integer')]
-    private $genre;
 
     #[ORM\Column(type: 'integer')]
     private $rating;
@@ -31,16 +50,19 @@ class Amor
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $isFavorite;
 
-    #[ORM\Column(type: 'string', length: 510)]
+    #[ORM\Column(type: 'integer')]
+    private $genre;
+
+    #[ORM\Column(type: 'string', length: 255)]
     private $description1;
 
-    #[ORM\Column(type: 'string', length: 510, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description2;
 
-    #[ORM\Column(type: 'string', length: 510, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description3;
 
-    #[ORM\Column(type: 'string', length: 510, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description4;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -61,9 +83,17 @@ class Amor
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $other;
 
-    #[ORM\Column(type: 'integer')]
-    //#[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'id')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'amores')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
+
+    #[ORM\OneToMany(mappedBy: 'amor', targetEntity: Assignation::class, orphanRemoval: true)]
+    private $assignations;
+
+    public function __construct()
+    {
+        $this->assignations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -94,18 +124,6 @@ class Amor
         return $this;
     }
 
-    public function getGenre(): ?int
-    {
-        return $this->genre;
-    }
-
-    public function setGenre(int $genre): self
-    {
-        $this->genre = $genre;
-
-        return $this;
-    }
-
     public function getRating(): ?int
     {
         return $this->rating;
@@ -126,6 +144,18 @@ class Amor
     public function setIsFavorite(?bool $isFavorite): self
     {
         $this->isFavorite = $isFavorite;
+
+        return $this;
+    }
+
+    public function getGenre(): ?int
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(int $genre): self
+    {
+        $this->genre = $genre;
 
         return $this;
     }
@@ -219,7 +249,7 @@ class Amor
         return $this->phone;
     }
 
-    public function setPhone(string $phone): self
+    public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
 
@@ -243,21 +273,51 @@ class Amor
         return $this->other;
     }
 
-    public function setOther(string $other): self
+    public function setOther(?string $other): self
     {
         $this->other = $other;
 
         return $this;
     }
 
-    public function getUser(): ?int
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(int $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Assignation>
+     */
+    public function getAssignations(): Collection
+    {
+        return $this->assignations;
+    }
+
+    public function addAssignation(Assignation $assignation): self
+    {
+        if (!$this->assignations->contains($assignation)) {
+            $this->assignations[] = $assignation;
+            $assignation->setAmor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssignation(Assignation $assignation): self
+    {
+        if ($this->assignations->removeElement($assignation)) {
+            // set the owning side to null (unless already changed)
+            if ($assignation->getAmor() === $this) {
+                $assignation->setAmor(null);
+            }
+        }
 
         return $this;
     }
