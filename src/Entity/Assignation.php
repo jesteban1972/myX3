@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AssignationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AssignationRepository::class)]
 #[ORM\Table(name: 'assignations')]
+#[ApiResource]
 class Assignation
 {
     #[ORM\Id]
