@@ -39,6 +39,12 @@ class User
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    private $username;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $password;
+
+    #[ORM\Column(type: 'string', length: 255)]
     private $email;
 
     #[ORM\Column(type: 'date')]
@@ -102,6 +108,30 @@ class User
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -414,5 +444,15 @@ class User
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return json_encode([
+            'id' => $this->getId(),
+            'username' => $this->getUsername(),
+            'password' => $this->getPassword(),
+            'email' => $this->getEmail(),
+        ]);
     }
 }

@@ -66,4 +66,13 @@ class Assignation
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return json_encode([
+            'id' => $this->getId(),
+            'praxis' => ($this->getPraxis())->getId(),
+            'amor' => ($this->getAmor())->getId(),
+        ]);
+    }
 }

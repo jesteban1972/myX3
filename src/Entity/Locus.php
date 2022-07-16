@@ -261,4 +261,12 @@ class Locus
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return json_encode([
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+        ]);
+    }
 }
