@@ -10,7 +10,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class ApiLoginController extends AbstractController
 {
-    #[Route('/api/login', name: 'api_login')]
+    #[Route('/api/login_check', name: 'api_login')]
     public function index(#[CurrentUser] ?User $user): Response
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {

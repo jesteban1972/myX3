@@ -44,7 +44,7 @@ class Locus
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'integer')]
     private $rating;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
