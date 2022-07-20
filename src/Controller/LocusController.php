@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/loca')]
-class LocaController extends AbstractController
+class LocusController extends AbstractController
 {
     #[Route('/', name: 'app_loca_index', methods: ['GET'])]
     public function index(LocusRepository $locusRepository): Response

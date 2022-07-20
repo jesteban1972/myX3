@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Amor{% endblock %}
+
+{% block body %}
+    <h1>Edit Amor</h1>
+
+    {{ include('amores/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_amores_index') }}">back to list</a>
+
+    {{ include('amores/_delete_form.html.twig') }}
+{% endblock %}

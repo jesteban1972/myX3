@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+    <h1>User</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>Username</th>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ user.password }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Birthdate</th>
+                <td>{{ user.birthdate ? user.birthdate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DefaultGenre</th>
+                <td>{{ user.defaultGenre }}</td>
+            </tr>
+            <tr>
+                <th>Description1</th>
+                <td>{{ user.description1 }}</td>
+            </tr>
+            <tr>
+                <th>Description2</th>
+                <td>{{ user.description2 }}</td>
+            </tr>
+            <tr>
+                <th>Description3</th>
+                <td>{{ user.description3 }}</td>
+            </tr>
+            <tr>
+                <th>Description4</th>
+                <td>{{ user.description4 }}</td>
+            </tr>
+            <tr>
+                <th>GuiLanguage</th>
+                <td>{{ user.guiLanguage }}</td>
+            </tr>
+            <tr>
+                <th>ResultsPerPage</th>
+                <td>{{ user.resultsPerPage }}</td>
+            </tr>
+            <tr>
+                <th>ListsOrder</th>
+                <td>{{ user.listsOrder }}</td>
+            </tr>
+            <tr>
+                <th>UserKind</th>
+                <td>{{ user.userKind }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_users_index') }}">back to list</a>
+
+    <a href="{{ path('app_users_edit', {'id': user.id}) }}">edit</a>
+
+    {{ include('users/_delete_form.html.twig') }}
+{% endblock %}

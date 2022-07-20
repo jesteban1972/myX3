@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Locus index{% endblock %}
+
+{% block body %}
+    <h1>Locus index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Achtung</th>
+                <th>Name</th>
+                <th>Rating</th>
+                <th>IsFavorite</th>
+                <th>Address</th>
+                <th>Country</th>
+                <th>Kind</th>
+                <th>Description</th>
+                <th>CoordinatesExact</th>
+                <th>CoordinatesGeneric</th>
+                <th>Web</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for locu in locuses %}
+            <tr>
+                <td>{{ locu.id }}</td>
+                <td>{{ locu.achtung }}</td>
+                <td>{{ locu.name }}</td>
+                <td>{{ locu.rating }}</td>
+                <td>{{ locu.isFavorite ? 'Yes' : 'No' }}</td>
+                <td>{{ locu.address }}</td>
+                <td>{{ locu.country }}</td>
+                <td>{{ locu.kind }}</td>
+                <td>{{ locu.description }}</td>
+                <td>{{ locu.coordinatesExact }}</td>
+                <td>{{ locu.coordinatesGeneric }}</td>
+                <td>{{ locu.web }}</td>
+                <td>
+                    <a href="{{ path('app_loca_show', {'id': locu.id}) }}">show</a>
+                    <a href="{{ path('app_loca_edit', {'id': locu.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_loca_new') }}">Create new</a>
+{% endblock %}

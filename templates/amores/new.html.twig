@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Amor{% endblock %}
+
+{% block body %}
+    <h1>Create new Amor</h1>
+
+    {{ include('amores/_form.html.twig') }}
+
+    <a href="{{ path('app_amores_index') }}">back to list</a>
+{% endblock %}
