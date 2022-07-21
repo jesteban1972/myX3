@@ -15,11 +15,11 @@ security:
 
     firewalls: # Make sure the firewall login is place before api, and if main exists, put it after api
 
-        login:
+        api_login:
             pattern: ^/api/login
             stateless: true
             json_login:
-                check_path: /api/login_check
+                check_path: /api/login
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
