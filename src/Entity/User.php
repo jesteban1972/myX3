@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -32,7 +33,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
         ]
     ]
 )]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -95,6 +96,9 @@ class User implements UserInterface
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Country::class, orphanRemoval: true)]
     private $countries;
+
+    #[ORM\Column(type: 'json')]
+    private $roles;
 
     public function __construct()
     {
@@ -460,7 +464,7 @@ class User implements UserInterface
 
     public function getRoles(): array
     {
-        return []; // tmp
+        return $this->roles; // tmp
     }
 
     public function eraseCredentials()

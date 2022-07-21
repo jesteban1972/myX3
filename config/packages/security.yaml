@@ -4,10 +4,7 @@ security:
         App\Entity\User: 'auto'
 
     enable_authenticator_manager: true
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
-#    password_hashers:
-#        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+
     providers:
 #        users_in_memory: { memory: null }
 
@@ -15,16 +12,12 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
-    firewalls:
 
-        dev:
-            pattern: ^/_(profiler|wdt)
-            security: false
+    firewalls: # Make sure the firewall login is place before api, and if main exists, put it after api
 
         login:
             pattern: ^/api/login
             stateless: true
-            anonymous: true
             json_login:
                 check_path: /api/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
@@ -33,45 +26,21 @@ security:
         api:
             pattern: ^/api
             stateless: true
+            #provider: app_user_provider
             jwt: ~
 
-#        main:
+        main:
+            json_login:
+                check_path: /authentication_token
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
     access_control:
         - { path: ^/api/docs, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
-
-#        dev:
-#            pattern: ^/(_(profiler|wdt)|css|images|js)/
-#            security: false
-#        main:
-#            lazy: true
-#            provider: users_in_memory
-#
-#            form_login:
-#                login_path: app_login
-#                check_path: app_login
-#                enable_csrf: true
-#
-#            json_login:
-#                login_path: api_login
-#                check_path: api_login
-#                username_path: email
-#                password_path: password
-#                failure_handler:
-
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
-
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
-#    access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
     security:
