@@ -1,6 +1,9 @@
 api_login:
     path: /api/login
 
+api_auth_token:
+    path: /api/auth_token
+
 controllers:
     resource: ../src/Controller/
     type: attribute
