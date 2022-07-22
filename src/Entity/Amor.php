@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\AmorRepository;
+use App\Repository\AmoresRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AmorRepository::class)]
+#[ORM\Entity(repositoryClass: AmoresRepository::class)]
 #[ORM\Table(name: 'amores')]
 #[ApiResource(
     collectionOperations: [

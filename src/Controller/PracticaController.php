@@ -4,17 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Praxis;
 use App\Form\PraxisType;
-use App\Repository\PraxisRepository;
+use App\Repository\PracticaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/practica')]
-class PraxisController extends AbstractController
+class PracticaController extends AbstractController
 {
     #[Route('/', name: 'app_practica_index', methods: ['GET'])]
-    public function index(PraxisRepository $praxisRepository): Response
+    public function index(PracticaRepository $praxisRepository): Response
     {
         return $this->render('practica/index.html.twig', [
             'praxes' => $praxisRepository->findAll(),
@@ -22,7 +22,7 @@ class PraxisController extends AbstractController
     }
 
     #[Route('/new', name: 'app_practica_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, PraxisRepository $praxisRepository): Response
+    public function new(Request $request, PracticaRepository $praxisRepository): Response
     {
         $praxi = new Praxis();
         $form = $this->createForm(PraxisType::class, $praxi);
@@ -49,7 +49,7 @@ class PraxisController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_practica_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Praxis $praxi, PraxisRepository $praxisRepository): Response
+    public function edit(Request $request, Praxis $praxi, PracticaRepository $praxisRepository): Response
     {
         $form = $this->createForm(PraxisType::class, $praxi);
         $form->handleRequest($request);
@@ -67,7 +67,7 @@ class PraxisController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_practica_delete', methods: ['POST'])]
-    public function delete(Request $request, Praxis $praxi, PraxisRepository $praxisRepository): Response
+    public function delete(Request $request, Praxis $praxi, PracticaRepository $praxisRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$praxi->getId(), $request->request->get('_token'))) {
             $praxisRepository->remove($praxi, true);

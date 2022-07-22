@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\PraxisRepository;
+use App\Repository\PracticaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: PraxisRepository::class)]
+#[ORM\Entity(repositoryClass: PracticaRepository::class)]
 #[ORM\Table(name: 'practica')]
 #[ApiResource(
     collectionOperations: [

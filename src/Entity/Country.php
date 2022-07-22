@@ -3,10 +3,10 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\CountryRepository;
+use App\Repository\CountriesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CountryRepository::class)]
+#[ORM\Entity(repositoryClass: CountriesRepository::class)]
 #[ORM\Table(name: 'countries')]
 #[ApiResource(
     collectionOperations: [

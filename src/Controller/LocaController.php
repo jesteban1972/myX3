@@ -4,17 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Locus;
 use App\Form\LocusType;
-use App\Repository\LocusRepository;
+use App\Repository\LocaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/loca')]
-class LocusController extends AbstractController
+class LocaController extends AbstractController
 {
     #[Route('/', name: 'app_loca_index', methods: ['GET'])]
-    public function index(LocusRepository $locusRepository): Response
+    public function index(LocaRepository $locusRepository): Response
     {
         return $this->render('loca/index.html.twig', [
             'locuses' => $locusRepository->findAll(),
@@ -22,7 +22,7 @@ class LocusController extends AbstractController
     }
 
     #[Route('/new', name: 'app_loca_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, LocusRepository $locusRepository): Response
+    public function new(Request $request, LocaRepository $locusRepository): Response
     {
         $locu = new Locus();
         $form = $this->createForm(LocusType::class, $locu);
@@ -49,7 +49,7 @@ class LocusController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_loca_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Locus $locu, LocusRepository $locusRepository): Response
+    public function edit(Request $request, Locus $locu, LocaRepository $locusRepository): Response
     {
         $form = $this->createForm(LocusType::class, $locu);
         $form->handleRequest($request);
@@ -67,7 +67,7 @@ class LocusController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_loca_delete', methods: ['POST'])]
-    public function delete(Request $request, Locus $locu, LocusRepository $locusRepository): Response
+    public function delete(Request $request, Locus $locu, LocaRepository $locusRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$locu->getId(), $request->request->get('_token'))) {
             $locusRepository->remove($locu, true);

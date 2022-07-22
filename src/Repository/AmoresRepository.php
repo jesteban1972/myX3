@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Amor[]    findAll()
  * @method Amor[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class AmorRepository extends ServiceEntityRepository
+class AmoresRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

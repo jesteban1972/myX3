@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\LocusRepository;
+use App\Repository\LocaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: LocusRepository::class)]
+#[ORM\Entity(repositoryClass: LocaRepository::class)]
 #[ORM\Table(name: 'loca')]
 #[ApiResource(
     collectionOperations: [

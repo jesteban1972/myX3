@@ -4,17 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Amor;
 use App\Form\Amor1Type;
-use App\Repository\AmorRepository;
+use App\Repository\AmoresRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/amores')]
-class AmorController extends AbstractController
+class AmoresController extends AbstractController
 {
     #[Route('/', name: 'app_amores_index', methods: ['GET'])]
-    public function index(AmorRepository $amorRepository): Response
+    public function index(AmoresRepository $amorRepository): Response
     {
         return $this->render('amores/index.html.twig', [
             'amors' => $amorRepository->findAll(),
@@ -22,7 +22,7 @@ class AmorController extends AbstractController
     }
 
     #[Route('/new', name: 'app_amores_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, AmorRepository $amorRepository): Response
+    public function new(Request $request, AmoresRepository $amorRepository): Response
     {
         $amor = new Amor();
         $form = $this->createForm(Amor1Type::class, $amor);
@@ -49,7 +49,7 @@ class AmorController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_amores_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Amor $amor, AmorRepository $amorRepository): Response
+    public function edit(Request $request, Amor $amor, AmoresRepository $amorRepository): Response
     {
         $form = $this->createForm(Amor1Type::class, $amor);
         $form->handleRequest($request);
@@ -67,7 +67,7 @@ class AmorController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_amores_delete', methods: ['POST'])]
-    public function delete(Request $request, Amor $amor, AmorRepository $amorRepository): Response
+    public function delete(Request $request, Amor $amor, AmoresRepository $amorRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$amor->getId(), $request->request->get('_token'))) {
             $amorRepository->remove($amor, true);

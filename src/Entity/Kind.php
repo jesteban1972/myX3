@@ -3,10 +3,10 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\KindRepository;
+use App\Repository\KindsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: KindRepository::class)]
+#[ORM\Entity(repositoryClass: KindsRepository::class)]
 #[ORM\Table(name: 'kinds')]
 #[ApiResource(
     collectionOperations: [
