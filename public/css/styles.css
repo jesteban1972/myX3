@@ -1,9 +1,20 @@
-#header, #footer {
+/* global styles */
+
+#header, #footer #body-content {
     background-color: #B33086;
+    margin: 1em auto;
+    font: 18px/1.5 sans-serif;
 }
+
+/* header and footer styles */
 
 #header, #footer p {
     text-align: center;
     color: whitesmoke;
     padding: 1em;
+}
+
+/* section styles */
+#section .quote {
+    background-color: #B33086;
 }

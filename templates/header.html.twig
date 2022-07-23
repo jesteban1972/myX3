@@ -1,3 +1,11 @@
 <div id="header">
+
     <h1>ΤΑ ΣΑΡΚΙΚΑ ΑΝΑΛΕΚΤΑ - myX - sarkodeiktes</h1>
+
+    {% if app.user %}
+        <p>Hello {{ app.user.username }}!</p>
+    {% endif %}
+
+    <a href="{{ path('app_logout') }}" target="_self">Logout</a>
+
 </div>

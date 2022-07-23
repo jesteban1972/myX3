@@ -3,76 +3,95 @@
 {% block title %}Amor{% endblock %}
 
 {% block body %}
-    <h1>Amor</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ amor.id }}</td>
-            </tr>
-            <tr>
-                <th>Achtung</th>
-                <td>{{ amor.achtung }}</td>
-            </tr>
-            <tr>
-                <th>Alias</th>
-                <td>{{ amor.alias }}</td>
-            </tr>
-            <tr>
-                <th>Rating</th>
-                <td>{{ amor.rating }}</td>
-            </tr>
-            <tr>
-                <th>IsFavorite</th>
-                <td>{{ amor.isFavorite ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Genre</th>
-                <td>{{ amor.genre }}</td>
-            </tr>
-            <tr>
-                <th>Description1</th>
-                <td>{{ amor.description1 }}</td>
-            </tr>
-            <tr>
-                <th>Description2</th>
-                <td>{{ amor.description2 }}</td>
-            </tr>
-            <tr>
-                <th>Description3</th>
-                <td>{{ amor.description3 }}</td>
-            </tr>
-            <tr>
-                <th>Description4</th>
-                <td>{{ amor.description4 }}</td>
-            </tr>
-            <tr>
-                <th>Web</th>
-                <td>{{ amor.web }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ amor.name }}</td>
-            </tr>
-            <tr>
-                <th>HasPhoto</th>
-                <td>{{ amor.hasPhoto ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Phone</th>
-                <td>{{ amor.phone }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ amor.email }}</td>
-            </tr>
-            <tr>
-                <th>Other</th>
-                <td>{{ amor.other }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <p class="large"><img src="" alt="" /><b>{{ amor.alias }}</b></p>
+
+    <article id="start">
+        <ul>
+            <li><a href="#data">_("Data")</a></li>
+            <li><a href="#list">_("List of experiences")</a></li>
+            <li><a href="#alia">_("Other data")</a></li>
+            <li><a href="#actions">_("Actions")</a></li>
+        </ul>
+    </article>
+
+    <article id="data">
+        <h1 onMouseOver="this.innerHTML='GENERALIA i.e. general data';" onMouseOut="this.innerHTML='GENERALIA';">GENERALIA</h1>
+        <p class="medium">_("Alias"): <b>{{ amor.alias }}</b></p>
+        <p class="medium">_("Rating"): <b>{{ amor.rating }}{# llamada a writtenRate() #}</b></p>
+        {% if amor.isFavorite %}
+            <p class="medium">(favorite)</p>
+        {% endif %}
+        <p class="medium">_("Genre"): <b>{{ amor.genre }}</b></p>
+
+        <table class="amorDescription">
+            <caption>_("Lover description")</caption>
+            <tbody>
+                <tr>
+                    <td>{{ app.user.description1 }}</td>
+                </tr>
+                <tr>
+                    <td>{{ amor.description1 }}</td>
+                </tr>
+                {% if amor.description2 %}
+                    <tr>
+                        <td>{{ app.user.description2 }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ amor.description2 }}</td>
+                    </tr>
+                {% endif %}
+                {% if amor.description3 %}
+                    <tr>
+                        <td>{{ app.user.description3 }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ amor.description3 }}</td>
+                    </tr>
+                {% endif %}
+                {% if amor.description4 %}
+                    <tr>
+                        <td>{{ app.user.description4 }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ amor.description4 }}</td>
+                    </tr>
+                {% endif %}
+            <tbody>
+        </table>
+    </article>
+
+    <article id="list">
+        <h1 onMouseOver="this.innerHTML='ELENCHUS i.e. list of the experiences with her/him';" onMouseOut="this.innerHTML='ELENCHUS';">ELENCHUS</h1>
+        <p>(coming soon)</p>
+    </article>
+
+    {% if (amor.achtung) or (amor.web) or (amor.name) or (amor.hasPhoto) or (amor.phone) or (amor.email) or (amor.other) %}<article id="alia">
+        </article>
+            <h1 onMouseOver="this.innerHTML='ALTERA i.e. complementary data';" onMouseOut="this.innerHTML='ALTERA';">ALTERA</h1>
+            {% if amor.achtung %}
+                <p class="medium">_("Achtung"): <b>{{ amor.achtung }}</b>.</p>
+            {% endif %}
+            {% if amor.web %}
+                <p class="medium">_("Web"): <b>{{ amor.web }}</b>.</p>
+            {% endif %}
+            {% if amor.name %}
+                <p class="medium">_("Name"): <b>{{ amor.name }}</b>.</p>
+            {% endif %}
+            {% if amor.hasPhoto %}
+                <td>(photo)</td>
+            {% endif %}
+            {% if amor.phone %}
+                <p class="medium">_("Phone"): <b>{{ amor.phone }}</b>.</p>
+            {% endif %}
+            {% if amor.email %}
+                <p class="medium">_("Email"): <b>{{ amor.email }}</b>.</p>
+            {% endif %}
+            {% if amor.other %}
+                <p class="medium">_("Other data"): <b>{{ amor.other }}</b>.</p>
+            {% endif %}
+        </article>
+    {% endif %}
 
     <a href="{{ path('app_amores_index') }}">back to list</a>
 
