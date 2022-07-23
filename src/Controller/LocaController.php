@@ -14,63 +14,63 @@ use Symfony\Component\Routing\Annotation\Route;
 class LocaController extends AbstractController
 {
     #[Route('/', name: 'app_loca_index', methods: ['GET'])]
-    public function index(LocaRepository $locusRepository): Response
+    public function index(LocaRepository $locaRepository): Response
     {
         return $this->render('loca/index.html.twig', [
-            'locuses' => $locusRepository->findAll(),
+            'loca' => $locaRepository->findBy(['user' => ($this->getUser())->getId()]),
         ]);
     }
 
     #[Route('/new', name: 'app_loca_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, LocaRepository $locusRepository): Response
+    public function new(Request $request, LocaRepository $locaRepository): Response
     {
-        $locu = new Locus();
-        $form = $this->createForm(LocusType::class, $locu);
+        $locus = new Locus();
+        $form = $this->createForm(LocusType::class, $locus);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $locusRepository->add($locu, true);
+            $locaRepository->add($locus, true);
 
             return $this->redirectToRoute('app_loca_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('loca/new.html.twig', [
-            'locu' => $locu,
+            'locus' => $locus,
             'form' => $form,
         ]);
     }
 
     #[Route('/{id}', name: 'app_loca_show', methods: ['GET'])]
-    public function show(Locus $locu): Response
+    public function show(Locus $locus): Response
     {
         return $this->render('loca/show.html.twig', [
-            'locu' => $locu,
+            'locus' => $locus,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_loca_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Locus $locu, LocaRepository $locusRepository): Response
+    public function edit(Request $request, Locus $locus, LocaRepository $locaRepository): Response
     {
-        $form = $this->createForm(LocusType::class, $locu);
+        $form = $this->createForm(LocusType::class, $locus);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $locusRepository->add($locu, true);
+            $locaRepository->add($locus, true);
 
             return $this->redirectToRoute('app_loca_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('loca/edit.html.twig', [
-            'locu' => $locu,
+            'locus' => $locus,
             'form' => $form,
         ]);
     }
 
     #[Route('/{id}', name: 'app_loca_delete', methods: ['POST'])]
-    public function delete(Request $request, Locus $locu, LocaRepository $locusRepository): Response
+    public function delete(Request $request, Locus $locus, LocaRepository $locaRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$locu->getId(), $request->request->get('_token'))) {
-            $locusRepository->remove($locu, true);
+        if ($this->isCsrfTokenValid('delete' . $locus->getId(), $request->request->get('_token'))) {
+            $locaRepository->remove($locus, true);
         }
 
         return $this->redirectToRoute('app_loca_index', [], Response::HTTP_SEE_OTHER);

@@ -3,49 +3,53 @@
 {% block title %}Praxis index{% endblock %}
 
 {% block body %}
-    <h1>Praxis index</h1>
+    <h1>Practica index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Achtung</th>
-                <th>Name</th>
-                <th>Rating</th>
-                <th>IsFavorite</th>
-                <th>Date</th>
-                <th>Ordinal</th>
-                <th>Description</th>
-                <th>Tq</th>
-                <th>Tl</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for praxi in praxes %}
-            <tr>
-                <td>{{ praxi.id }}</td>
-                <td>{{ praxi.achtung }}</td>
-                <td>{{ praxi.name }}</td>
-                <td>{{ praxi.rating }}</td>
-                <td>{{ praxi.isFavorite ? 'Yes' : 'No' }}</td>
-                <td>{{ praxi.date ? praxi.date|date('Y-m-d') : '' }}</td>
-                <td>{{ praxi.ordinal }}</td>
-                <td>{{ praxi.description }}</td>
-                <td>{{ praxi.tq }}</td>
-                <td>{{ praxi.tl }}</td>
-                <td>
-                    <a href="{{ path('app_practica_show', {'id': praxi.id}) }}">show</a>
-                    <a href="{{ path('app_practica_edit', {'id': praxi.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="11">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% if practica|length > 0 %}
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Achtung</th>
+                    <th>Name</th>
+                    <th>Rating</th>
+                    <th>IsFavorite</th>
+                    <th>Date</th>
+                    <th>Ordinal</th>
+                    <th>Description</th>
+                    <th>Tq</th>
+                    <th>Tl</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for praxis in practica %}
+                <tr>
+                    <td>{{ praxis.id }}</td>
+                    <td>{{ praxis.achtung }}</td>
+                    <td>{{ praxis.name }}</td>
+                    <td>{{ praxis.rating }}</td>
+                    <td>{{ praxis.isFavorite ? 'Yes' : 'No' }}</td>
+                    <td>{{ praxis.date ? praxis.date|date('Y-m-d') : '' }}</td>
+                    <td>{{ praxis.ordinal }}</td>
+                    <td>{{ praxis.description }}</td>
+                    <td>{{ praxis.tq }}</td>
+                    <td>{{ praxis.tl }}</td>
+                    <td>
+                        <a href="{{ path('app_practica_show', {'id': praxis.id}) }}">show</a>
+                        <a href="{{ path('app_practica_edit', {'id': praxis.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="11">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% endif %}
 
     <a href="{{ path('app_practica_new') }}">Create new</a>
 {% endblock %}

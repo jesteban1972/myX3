@@ -9,50 +9,50 @@
         <tbody>
             <tr>
                 <th>Id</th>
-                <td>{{ praxi.id }}</td>
+                <td>{{ praxis.id }}</td>
             </tr>
             <tr>
                 <th>Achtung</th>
-                <td>{{ praxi.achtung }}</td>
+                <td>{{ praxis.achtung }}</td>
             </tr>
             <tr>
                 <th>Name</th>
-                <td>{{ praxi.name }}</td>
+                <td>{{ praxis.name }}</td>
             </tr>
             <tr>
                 <th>Rating</th>
-                <td>{{ praxi.rating }}</td>
+                <td>{{ praxis.rating }}</td>
             </tr>
             <tr>
                 <th>IsFavorite</th>
-                <td>{{ praxi.isFavorite ? 'Yes' : 'No' }}</td>
+                <td>{{ praxis.isFavorite ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
                 <th>Date</th>
-                <td>{{ praxi.date ? praxi.date|date('Y-m-d') : '' }}</td>
+                <td>{{ praxis.date ? praxis.date|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
                 <th>Ordinal</th>
-                <td>{{ praxi.ordinal }}</td>
+                <td>{{ praxis.ordinal }}</td>
             </tr>
             <tr>
                 <th>Description</th>
-                <td>{{ praxi.description }}</td>
+                <td>{{ praxis.description }}</td>
             </tr>
             <tr>
                 <th>Tq</th>
-                <td>{{ praxi.tq }}</td>
+                <td>{{ praxis.tq }}</td>
             </tr>
             <tr>
                 <th>Tl</th>
-                <td>{{ praxi.tl }}</td>
+                <td>{{ praxis.tl }}</td>
             </tr>
         </tbody>
     </table>
 
     <a href="{{ path('app_practica_index') }}">back to list</a>
 
-    <a href="{{ path('app_practica_edit', {'id': praxi.id}) }}">edit</a>
+    <a href="{{ path('app_practica_edit', {'id': praxis.id}) }}">edit</a>
 
     {{ include('practica/_delete_form.html.twig') }}
 {% endblock %}

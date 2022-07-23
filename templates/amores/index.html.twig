@@ -3,61 +3,65 @@
 {% block title %}Amor index{% endblock %}
 
 {% block body %}
-    <h1>Amor index</h1>
+    <h1>Amores index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Achtung</th>
-                <th>Alias</th>
-                <th>Rating</th>
-                <th>IsFavorite</th>
-                <th>Genre</th>
-                <th>Description1</th>
-                <th>Description2</th>
-                <th>Description3</th>
-                <th>Description4</th>
-                <th>Web</th>
-                <th>Name</th>
-                <th>HasPhoto</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Other</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for amor in amors %}
-            <tr>
-                <td>{{ amor.id }}</td>
-                <td>{{ amor.achtung }}</td>
-                <td>{{ amor.alias }}</td>
-                <td>{{ amor.rating }}</td>
-                <td>{{ amor.isFavorite ? 'Yes' : 'No' }}</td>
-                <td>{{ amor.genre }}</td>
-                <td>{{ amor.description1 }}</td>
-                <td>{{ amor.description2 }}</td>
-                <td>{{ amor.description3 }}</td>
-                <td>{{ amor.description4 }}</td>
-                <td>{{ amor.web }}</td>
-                <td>{{ amor.name }}</td>
-                <td>{{ amor.hasPhoto ? 'Yes' : 'No' }}</td>
-                <td>{{ amor.phone }}</td>
-                <td>{{ amor.email }}</td>
-                <td>{{ amor.other }}</td>
-                <td>
-                    <a href="{{ path('app_amores_show', {'id': amor.id}) }}">show</a>
-                    <a href="{{ path('app_amores_edit', {'id': amor.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="17">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% if amores|length > 0 %}
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Achtung</th>
+                    <th>Alias</th>
+                    <th>Rating</th>
+                    <th>IsFavorite</th>
+                    <th>Genre</th>
+                    <th>Description1</th>
+                    <th>Description2</th>
+                    <th>Description3</th>
+                    <th>Description4</th>
+                    <th>Web</th>
+                    <th>Name</th>
+                    <th>HasPhoto</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Other</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for amor in amores %}
+                <tr>
+                    <td>{{ amor.id }}</td>
+                    <td>{{ amor.achtung }}</td>
+                    <td>{{ amor.alias }}</td>
+                    <td>{{ amor.rating }}</td>
+                    <td>{{ amor.isFavorite ? 'Yes' : 'No' }}</td>
+                    <td>{{ amor.genre }}</td>
+                    <td>{{ amor.description1 }}</td>
+                    <td>{{ amor.description2 }}</td>
+                    <td>{{ amor.description3 }}</td>
+                    <td>{{ amor.description4 }}</td>
+                    <td>{{ amor.web }}</td>
+                    <td>{{ amor.name }}</td>
+                    <td>{{ amor.hasPhoto ? 'Yes' : 'No' }}</td>
+                    <td>{{ amor.phone }}</td>
+                    <td>{{ amor.email }}</td>
+                    <td>{{ amor.other }}</td>
+                    <td>
+                        <a href="{{ path('app_amores_show', {'id': amor.id}) }}">show</a>
+                        <a href="{{ path('app_amores_edit', {'id': amor.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="17">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% endif %}
 
     <a href="{{ path('app_amores_new') }}">Create new</a>
 {% endblock %}
