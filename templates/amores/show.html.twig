@@ -63,11 +63,13 @@
 
     <article id="list">
         <h1 onMouseOver="this.innerHTML='ELENCHUS i.e. list of the experiences with her/him';" onMouseOut="this.innerHTML='ELENCHUS';">ELENCHUS</h1>
-        <p>(coming soon)</p>
+        {% for praxis in practica %}
+            {{ render(controller('App\\Controller\\PracticaController::preview', {praxis})) }}
+        {% endfor %}
     </article>
 
     {% if (amor.achtung) or (amor.web) or (amor.name) or (amor.hasPhoto) or (amor.phone) or (amor.email) or (amor.other) %}<article id="alia">
-        </article>
+        <article>
             <h1 onMouseOver="this.innerHTML='ALTERA i.e. complementary data';" onMouseOut="this.innerHTML='ALTERA';">ALTERA</h1>
             {% if amor.achtung %}
                 <p class="medium">_("Achtung"): <b>{{ amor.achtung }}</b>.</p>
@@ -92,6 +94,26 @@
             {% endif %}
         </article>
     {% endif %}
+
+    <article id="actions">
+        <h1>_("ACTIONS")</h1>
+
+        <form action="amorEdit.php" method="GET">
+            <input type="hidden" name="amorID" value="$amor->getAmorID()" />
+            <input type="submit" value="_('Edit lover')" />
+        </form>
+
+        <form action="amorDelete.php" method="POST">
+            <input type="hidden" name="amorID" value="" />
+            <input type="submit" value="_('Delete lover')" />
+        </form>
+
+        <p style="text-align: center;">
+            <img src=\"images/arrow_back.gif\" />
+            <a href="javascript: history.back();">_("Back to previous")</a>
+        </p>
+
+    </article>
 
     <a href="{{ path('app_amores_index') }}">back to list</a>
 

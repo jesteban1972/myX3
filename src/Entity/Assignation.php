@@ -20,7 +20,7 @@ class Assignation
     #[ORM\JoinColumn(nullable: false)]
     private $amor;
 
-    #[ORM\ManyToOne(targetEntity: Praxis::class, inversedBy: 'assignations')]
+    #[ORM\ManyToOne(targetEntity: Praxis::class, fetch: 'EAGER', inversedBy: 'assignations')]
     #[ORM\JoinColumn(nullable: false)]
     private $praxis;
 

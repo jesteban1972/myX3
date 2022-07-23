@@ -1,0 +1,11 @@
+<div class="praxis-preview">
+    <p><b><a href="{{ path('app_practica_show', {'id': id}) }}">{{ name }}</a></b> - {{ rating }}</p>
+    <p><b>_("QVANDO")</b> {{ date }}
+        {% if ordinal %}
+            ({{ ordinal }})
+        {% endif %}
+        <b>_("VBI")</b> {{ locus }}
+        <b>_("CVM QVIBVS")</b> (coming soon)
+        <b>_("QVOD")</b> {{ excerpt }}
+    </p>
+</div>

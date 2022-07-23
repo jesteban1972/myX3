@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\Amor;
 use App\Form\Amor1Type;
 use App\Repository\AmoresRepository;
+use App\Repository\PracticaRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,10 +44,11 @@ class AmoresController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_amores_show', methods: ['GET'])]
-    public function show(Amor $amor): Response
+    public function show(Amor $amor, PracticaRepository $practicaRepository): Response
     {
         return $this->render('amores/show.html.twig', [
             'amor' => $amor,
+            'practica' => $this->getPractica($amor->getAssignations(), $practicaRepository),
         ]);
     }
 
@@ -74,5 +78,15 @@ class AmoresController extends AbstractController
         }
 
         return $this->redirectToRoute('app_amores_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    public function getPractica(PersistentCollection $assignations, PracticaRepository $practicaRepository): array
+    {
+        $practica = [];
+        foreach ($assignations as $assignation) {
+            $practica[] = $assignation->getPraxis();
+        }
+
+        return $practica;
     }
 }

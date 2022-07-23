@@ -75,4 +75,23 @@ class PracticaController extends AbstractController
 
         return $this->redirectToRoute('app_practica_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route(name: 'app_practica_preview', methods: ['GET'])]
+    public function preview(Praxis $praxis, KalimaController $kalimaController): Response
+    {
+        $excerpt = $kalimaController->fetchExcerpt($praxis->getDescription(), [
+            'entity' => Praxis::class,
+            'id' => $praxis->getId(),
+        ]);
+
+        return $this->render('practica/_preview.html.twig', [ // ??? porqué no se puede usar símplemente 'practica/preview'?
+            'id' => $praxis->getId(),
+            'name' => $praxis->getName(),
+            'rating' => $praxis->getRating(),
+            'date' => $praxis->getDate()->format('d/m/Y'),
+            'ordinal' => $praxis->getOrdinal(),
+            'locus' => $praxis->getLocus()->getName(),
+            'excerpt' => $excerpt,
+        ]);
+    }
 }
