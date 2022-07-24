@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Praxis;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class KalimaController extends AbstractController
 {
+    private const MAX_EXCERPT_LENGTH = 510; // default 510 chars
+
     #[Route('/kalima', name: 'app_kalima')]
     public function index(): Response
     {
@@ -16,13 +19,32 @@ class KalimaController extends AbstractController
         ]);
     }
 
-    public function fetchExcerpt(?string $rawText, array $options = []): string
+    public function getCombinedDescription($amor): string
     {
-        if (!isset($rawText)) {
-            throw new \Exception('unable to fetch excerpt from non existing text');
+        $allDescriptions = [
+            1 => $amor->getDescription1(),
+            2 => $amor->getDescription2(),
+            3 => $amor->getDescription3(),
+            4 => $amor->getDescription4(),
+        ];
+
+        $combinedDescription = '';
+
+        foreach ($allDescriptions as $key => $description) {
+            if (isset($description)) {
+                $combinedDescription .= 1 !== $key ? '. ' : '';
+                $combinedDescription .= $description;
+            }
         }
 
-        if (strlen($rawText) < 510) { // 510 domain constant
+        return $combinedDescription;
+    }
+
+    public function fetchExcerpt(Praxis $praxis): string
+    {
+        $rawText = $praxis->getDescription();
+
+        if (strlen($rawText) < self::MAX_EXCERPT_LENGTH) {
             return $rawText;
         }
 
@@ -42,16 +64,9 @@ class KalimaController extends AbstractController
         $excerpt = str_replace("</b>", "", $excerpt);
         $excerpt = str_replace("<i>", "", $excerpt);
         $excerpt = str_replace("</i>", "", $excerpt);
-        // display a 'See more...' button:
-//        echo " [...] <input type=\"button\" value=\"> " ._("See more...") .
-//            "\" onclick=\"window.location.href='praxis.php?praxisID=".
-//            $this->getPraxisID()."#description'\" />";
 
-        if (isset($options)) {
-            if ('App\Entity\Praxis' === $options['entity']) {
-                $excerpt .=  ' [...] <input type="button" value="_(See more...)" onclick="window.location.href=\'practica\\' . $options['id'] . '\'" />';
-            }
-        }
+        // display a 'See more...' button:
+        $excerpt .=  ' [...] <input type="button" value="_("See more...")" onclick="window.location.href=\'practica\\' . $praxis->getId() . '\'" />';
 
         return $excerpt;
     }

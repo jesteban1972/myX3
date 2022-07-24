@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Praxis index{% endblock %}
+
+{% block body %}
+    <h1>Practica</h1>
+
+    <section>
+
+        <article id="start">
+            <p class="medium"><img src=".getImage("amor", "small").
+                "\" alt=\""._("(Image of a golden coin)")."\" /> <b>"._($name).
+                    "</b>: "._($descr)."
+            </p>
+            <p>{{ practica|length }} practica found</p>
+
+            <ul>
+                <li><a href="#list">_("List of practica")</a></li>
+                <li><a href="#actions">_("Actions")</a></li>
+            </ul>
+
+        </article>
+
+        {% if practica|length > 0 %}
+
+            <article id="list">
+
+                <h1 onMouseOver="_("ELENCHUS i.e. list of practica")" onMouseOut="this.innerHTML='ELENCHUS';">ELENCHUS</h1>
+
+                {% for praxis in practica %}
+                    {{ render(controller('App\\Controller\\PracticaController::preview', {praxis})) }}
+                {% endfor %}
+
+            </article>
+
+        {% endif %}
+
+        <a href="{{ path('app_practica_new') }}">Create new</a>
+
+    </section>
+
+{% endblock %}

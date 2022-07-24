@@ -6,7 +6,6 @@ use App\Entity\Amor;
 use App\Form\Amor1Type;
 use App\Repository\AmoresRepository;
 use App\Repository\PracticaRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,8 +18,17 @@ class AmoresController extends AbstractController
     #[Route('/', name: 'app_amores_index', methods: ['GET'])]
     public function index(AmoresRepository $amoresRepository): Response
     {
-        return $this->render('amores/index.html.twig', [
+        return $this->render('amores/amores.html.twig', [
             'amores' => $amoresRepository->findBy(['user' => ($this->getUser())->getId()]),
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_amores_show', methods: ['GET'])]
+    public function show(Amor $amor, PracticaRepository $practicaRepository): Response
+    {
+        return $this->render('amores/amor.html.twig', [
+            'amor' => $amor,
+            'practica' => $this->getPractica($amor->getAssignations(), $practicaRepository),
         ]);
     }
 
@@ -37,18 +45,9 @@ class AmoresController extends AbstractController
             return $this->redirectToRoute('app_amores_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('amores/new.html.twig', [
+        return $this->renderForm('new_amor.html.twig', [
             'amor' => $amor,
             'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_amores_show', methods: ['GET'])]
-    public function show(Amor $amor, PracticaRepository $practicaRepository): Response
-    {
-        return $this->render('amores/show.html.twig', [
-            'amor' => $amor,
-            'practica' => $this->getPractica($amor->getAssignations(), $practicaRepository),
         ]);
     }
 
@@ -64,7 +63,7 @@ class AmoresController extends AbstractController
             return $this->redirectToRoute('app_amores_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('amores/edit.html.twig', [
+        return $this->renderForm('amores/edit_amor.html.twig', [
             'amor' => $amor,
             'form' => $form,
         ]);
@@ -80,13 +79,23 @@ class AmoresController extends AbstractController
         return $this->redirectToRoute('app_amores_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    public function getPractica(PersistentCollection $assignations, PracticaRepository $practicaRepository): array
+    public function getPractica(PersistentCollection $assignations): array
     {
         $practica = [];
         foreach ($assignations as $assignation) {
             $practica[] = $assignation->getPraxis();
         }
-
         return $practica;
+    }
+
+    #[Route(name: 'app_amores_preview', methods: ['GET'])]
+    public function preview(Amor $amor, KalimaController $kalimaController): Response
+    {
+        return $this->render('amores/_preview.html.twig', [ // ??? porqué no se puede usar símplemente 'practica/preview'?
+            'id' => $amor->getId(),
+            'alias' => $amor->getAlias(),
+            'rating' => $amor->getRating(),
+            'combinedDescription' => $kalimaController->getCombinedDescription($amor),
+        ]);
     }
 }

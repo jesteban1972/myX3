@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Locus index{% endblock %}
+
+{% block body %}
+    <h1>Loca</h1>
+
+    {% if loca|length > 0 %}
+
+        <article id="list">
+
+            <h1 onMouseOver="_("ELENCHUS i.e. list of practica")" onMouseOut="this.innerHTML='ELENCHUS';">ELENCHUS</h1>
+
+            {% for locus in loca %}
+                {{ render(controller('App\\Controller\\LocaController::preview', {locus})) }}
+            {% endfor %}
+
+        </article>
+
+    {% endif %}
+
+    <a href="{{ path('app_loca_new') }}">Create new</a>
+{% endblock %}

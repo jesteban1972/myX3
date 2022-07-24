@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Amor index{% endblock %}
+
+{% block body %}
+    <section>
+        <h1>Amores</h1>
+
+        <article id="start">
+            <p class="medium"><img src=".getImage("amor", "small").
+                "\" alt=\""._("(Image of a cycladic idol)")."\" /> <b>"._($name).
+                    "</b>: "._($descr)."
+            </p>
+            <p>{{ amores|length }} lovers found</p>
+
+            <ul>
+                <li><a href="#list">_("List of lovers")</a></li>
+                <li><a href="#actions">_("Actions")</a></li>
+            </ul>
+
+        </article>
+
+        {% if amores|length > 0 %}
+
+            <article id="list">
+
+                <h1 onMouseOver="_("ELENCHUS i.e. list of lovers")" onMouseOut="this.innerHTML='ELENCHUS';">ELENCHUS</h1>
+
+                {% for amor in amores %}
+                        {{ render(controller('App\\Controller\\AmoresController::preview', {amor})) }}
+                {% endfor %}
+
+            </article>
+
+        {% endif %}
+
+        <a href="{{ path('app_amores_new') }}">Create new</a>
+
+    </section>
+
+{% endblock %}

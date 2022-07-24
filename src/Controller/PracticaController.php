@@ -16,8 +16,16 @@ class PracticaController extends AbstractController
     #[Route('/', name: 'app_practica_index', methods: ['GET'])]
     public function index(PracticaRepository $practicaRepository): Response
     {
-        return $this->render('practica/index.html.twig', [
+        return $this->render('practica/practica.html.twig', [
             'practica' => $practicaRepository->findBy(['user' => ($this->getUser())->getId()]),
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_practica_show', methods: ['GET'])]
+    public function show(Praxis $praxis): Response
+    {
+        return $this->render('practica/praxis.html.twig', [
+            'praxis' => $praxis,
         ]);
     }
 
@@ -34,17 +42,9 @@ class PracticaController extends AbstractController
             return $this->redirectToRoute('app_practica_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('practica/new.html.twig', [
+        return $this->renderForm('practica/new_praxis.html.twig', [
             'praxis' => $praxis,
             'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_practica_show', methods: ['GET'])]
-    public function show(Praxis $praxis): Response
-    {
-        return $this->render('practica/show.html.twig', [
-            'praxis' => $praxis,
         ]);
     }
 
@@ -60,7 +60,7 @@ class PracticaController extends AbstractController
             return $this->redirectToRoute('app_practica_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('practica/edit.html.twig', [
+        return $this->renderForm('practica/edit_praxis.html.twig', [
             'praxis' => $praxis,
             'form' => $form,
         ]);
@@ -79,11 +79,6 @@ class PracticaController extends AbstractController
     #[Route(name: 'app_practica_preview', methods: ['GET'])]
     public function preview(Praxis $praxis, KalimaController $kalimaController): Response
     {
-        $excerpt = $kalimaController->fetchExcerpt($praxis->getDescription(), [
-            'entity' => Praxis::class,
-            'id' => $praxis->getId(),
-        ]);
-
         return $this->render('practica/_preview.html.twig', [ // ??? porqué no se puede usar símplemente 'practica/preview'?
             'id' => $praxis->getId(),
             'name' => $praxis->getName(),
@@ -91,7 +86,7 @@ class PracticaController extends AbstractController
             'date' => $praxis->getDate()->format('d/m/Y'),
             'ordinal' => $praxis->getOrdinal(),
             'locus' => $praxis->getLocus()->getName(),
-            'excerpt' => $excerpt,
+            'excerpt' => $kalimaController->fetchExcerpt($praxis),
         ]);
     }
 }
